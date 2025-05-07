@@ -1,0 +1,57 @@
+code,description,category
+10021,Fine needle aspiration biopsy without imaging guidance,General Surgery
+10022,Fine needle aspiration biopsy with imaging guidance,General Surgery
+10040,Acne surgery,General Surgery
+10060,Simple incision and drainage of abscess,General Surgery
+10120,Incision and removal of foreign body subcutaneous tissues,General Surgery
+10140,Incision and drainage hematoma,General Surgery
+11000,Debridement of extensive eczematous or infected skin,General Surgery
+11042,Debridement of skin subcutaneous tissue and muscle,General Surgery
+11200,Removal of skin tags up to 15 lesions,General Surgery
+11400,Excision benign lesion trunk/arms/legs up to 0.5 cm,General Surgery
+31500,Endotracheal intubation emergency procedure,Respiratory
+32551,Tube thoracostomy includes water seal,Respiratory
+32554,Thoracentesis needle or catheter,Respiratory
+33010,Pericardiocentesis initial,Cardiovascular
+33208,Insertion of dual-chamber pacemaker,Cardiovascular
+33249,Insertion or replacement of permanent implantable defibrillator system,Cardiovascular
+33533,Coronary artery bypass single vein graft,Cardiovascular
+35301,Carotid endarterectomy,Cardiovascular
+35471,Transluminal balloon angioplasty venous,Cardiovascular
+36415,Collection of venous blood by venipuncture,Cardiovascular
+44120,Enterectomy resection small intestine,Digestive
+44140,Colectomy partial with anastomosis,Digestive
+44950,Appendectomy,Digestive
+45378,Colonoscopy flexible diagnostic,Digestive
+45380,Colonoscopy with biopsy,Digestive
+47562,Laparoscopic cholecystectomy,Digestive
+47600,Cholecystectomy,Digestive
+49000,Exploratory laparotomy,Digestive
+49650,Laparoscopic inguinal hernia repair initial,Digestive
+50590,Lithotripsy extracorporeal shock wave,Urinary
+51102,Aspiration of bladder by needle suprapubic,Urinary
+51705,Change of cystostomy tube simple,Urinary
+51840,Anterior vesicourethropexy or urethropexy,Urinary
+52000,Cystourethroscopy,Urinary
+52310,Cystourethroscopy with removal of foreign body,Urinary
+52601,Transurethral electrosurgical resection of prostate,Urinary
+53600,Dilation of urethral stricture by passage of sound or urethral dilator male,Urinary
+55700,Biopsy prostate needle or punch,Male Genital
+55866,Laparoscopic radical prostatectomy,Male Genital
+58150,Hysterectomy total abdominal,Female Genital
+58558,Hysteroscopy with biopsy,Female Genital
+58925,Ovarian cystectomy unilateral or bilateral,Female Genital
+59000,Amniocentesis diagnostic,Pregnancy-related
+59400,Obstetrical care including antepartum care delivery and postpartum care,Pregnancy-related
+59514,Cesarean delivery only,Pregnancy-related
+63030,Laminotomy with decompression of nerve roots 1 interspace lumbar,Spine
+63047,Laminectomy with decompression of nerve roots 1 interspace lumbar,Spine
+64721,Neuroplasty or transposition median nerve at carpal tunnel,Nervous System
+65855,Trabeculoplasty by laser surgery 1 or more sessions,Eye
+66984,Extracapsular cataract removal with lens insertion,Eye
+69436,Tympanostomy with anesthesia,Ear
+12345,Sample Procedure 1,General Surgery
+23456,Sample Procedure 2,Orthopedic Surgery
+34567,Sample Procedure 3,Neurosurgery
+45678,Sample Procedure 4,Cardiothoracic Surgery
+56789,Sample Procedure 5,Vascular Surgery 
