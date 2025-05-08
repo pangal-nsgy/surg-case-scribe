@@ -1,0 +1,11 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Run linting before commit
+npm run lint
+
+# Don't commit .env files
+if git diff --cached --name-only | grep -E '\.env$'; then
+  echo "WARNING: Attempting to commit .env file. Use .env.example instead."
+  exit 1
+fi 
