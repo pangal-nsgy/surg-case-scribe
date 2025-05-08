@@ -1,0 +1,12 @@
+# Default owners for everything in the repo
+* @pangal-nsgy
+
+# Frontend code
+/app/ @pangal-nsgy
+
+# API code
+/app/api/ @pangal-nsgy
+
+# Config files
+*.json @pangal-nsgy
+*.js @pangal-nsgy 
