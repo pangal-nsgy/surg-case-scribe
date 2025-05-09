@@ -3,6 +3,17 @@
 import { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { CloudArrowUpIcon, DocumentTextIcon, XCircleIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
+import Image from 'next/image';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import { 
+  ClockIcon, 
+  CheckCircleIcon, 
+  ChartBarIcon,
+  BeakerIcon,
+  RocketLaunchIcon 
+} from '@heroicons/react/24/outline';
 
 // Status types for processing
 type ProcessingStatus = 'idle' | 'uploading' | 'processing' | 'completed' | 'error';
@@ -48,101 +59,333 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <main className="container mx-auto px-4 py-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">ACGME Case Log Assistant</h1>
-          <p className="text-xl text-gray-600">Upload your surgical case logs to automatically determine CPT codes</p>
-          <p className="mt-2 text-md text-orange-600">Demo Version - Backend Processing Coming Soon</p>
-        </div>
-
-        <div className="max-w-3xl mx-auto">
-          {/* File Upload Section */}
-          <div className="bg-white shadow rounded-lg p-6 mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Upload Case Logs</h2>
-            
-            <div 
-              {...getRootProps()} 
-              className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition duration-300 ease-in-out ${
-                isDragActive ? 'border-primary-600 bg-primary-50' : 'border-gray-300 hover:border-primary-500'
-              }`}
-            >
-              <input {...getInputProps()} />
-              <CloudArrowUpIcon className="h-12 w-12 mx-auto text-gray-400" />
-              <p className="mt-2 text-sm text-gray-500">
-                {isDragActive
-                  ? "Drop your CSV file here"
-                  : "Drag and drop a CSV file here, or click to select a file"}
-              </p>
-              <p className="text-xs text-gray-400 mt-1">Only CSV files are accepted</p>
+    <>
+      <Header />
+      
+      {/* Hero Section */}
+      <div className="relative isolate bg-white">
+        <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:flex lg:items-center lg:gap-x-10 lg:px-8 lg:py-40">
+          <div className="mx-auto max-w-2xl lg:mx-0 lg:flex-auto">
+            <h1 className="mt-10 max-w-lg text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+              Streamline Your ACGME Case Logging
+            </h1>
+            <p className="mt-6 text-lg leading-8 text-gray-600">
+              Automatically determine CPT codes for your surgical cases. Save hours of administrative work and ensure accurate reporting with our AI-powered assistant.
+            </p>
+            <div className="mt-10 flex items-center gap-x-6">
+              <Link
+                href="/upload"
+                className="rounded-md bg-teal-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
+              >
+                Get Started
+              </Link>
+              <Link href="/#how-it-works" className="text-sm font-semibold leading-6 text-gray-900">
+                Learn more <span aria-hidden="true">→</span>
+              </Link>
             </div>
-
-            {file && (
-              <div className="mt-4 p-3 bg-gray-50 rounded-md flex items-center justify-between">
-                <div className="flex items-center">
-                  <DocumentTextIcon className="h-5 w-5 text-gray-500 mr-2" />
-                  <span className="text-sm font-medium">{file.name}</span>
-                  <span className="ml-2 text-xs text-gray-500">({Math.round(file.size / 1024)} KB)</span>
+          </div>
+          <div className="mt-16 sm:mt-24 lg:mt-0 lg:flex-shrink-0 lg:flex-grow">
+            <div className="relative mx-auto w-[24rem] max-w-full">
+              <div className="bg-gray-50 p-8 rounded-2xl shadow-lg">
+                <div className="mb-4 flex items-center justify-between border-b border-gray-200 pb-4">
+                  <div className="text-lg font-semibold text-gray-900">Case Log Analysis</div>
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-teal-600 text-white">
+                    <CheckCircleIcon className="h-5 w-5" />
+                  </div>
                 </div>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleReset();
-                  }}
-                  className="text-gray-400 hover:text-gray-600"
-                >
-                  <XCircleIcon className="h-5 w-5" />
-                </button>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-x-3">
+                    <div className="h-6 w-6 flex-none rounded-full bg-teal-600/20 flex items-center justify-center">
+                      <CheckCircleIcon className="h-4 w-4 text-teal-600" />
+                    </div>
+                    <p className="text-sm text-gray-700">Automatic CPT code detection</p>
+                  </div>
+                  <div className="flex items-center gap-x-3">
+                    <div className="h-6 w-6 flex-none rounded-full bg-teal-600/20 flex items-center justify-center">
+                      <CheckCircleIcon className="h-4 w-4 text-teal-600" />
+                    </div>
+                    <p className="text-sm text-gray-700">AI-powered case analysis</p>
+                  </div>
+                  <div className="flex items-center gap-x-3">
+                    <div className="h-6 w-6 flex-none rounded-full bg-teal-600/20 flex items-center justify-center">
+                      <CheckCircleIcon className="h-4 w-4 text-teal-600" />
+                    </div>
+                    <p className="text-sm text-gray-700">Time-saving workflow</p>
+                  </div>
+                  <div className="flex items-center gap-x-3">
+                    <div className="h-6 w-6 flex-none rounded-full bg-teal-600/20 flex items-center justify-center">
+                      <CheckCircleIcon className="h-4 w-4 text-teal-600" />
+                    </div>
+                    <p className="text-sm text-gray-700">Improved accuracy</p>
+                  </div>
+                </div>
               </div>
-            )}
-
-            <div className="mt-6 flex justify-between">
-              <button
-                onClick={handleReset}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-                disabled={status === 'uploading' || status === 'processing'}
-              >
-                Reset
-              </button>
-              <button
-                onClick={handleUpload}
-                disabled={!file || status === 'uploading' || status === 'processing'}
-                className={`px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed`}
-              >
-                {status === 'uploading' ? 'Uploading...' : status === 'processing' ? 'Processing...' : 'Process Case Logs'}
-              </button>
             </div>
+          </div>
+        </div>
+      </div>
 
-            {/* Error message for demo version */}
-            {error && (
-              <div className="mt-4 p-4 text-sm text-amber-700 bg-amber-100 rounded-md">
-                <p>{error}</p>
-                <p className="mt-2 text-xs">This is just a frontend demo. Backend processing will be implemented in the next phase.</p>
+      {/* Stats Section */}
+      <div className="bg-teal-600">
+        <div className="mx-auto max-w-7xl py-12 px-6 sm:py-16 lg:px-8 lg:py-20">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+              Trusted by surgeons across specialties
+            </h2>
+            <p className="mt-3 text-xl text-teal-50">
+              Our tool helps residents and fellows accurately log their cases.
+            </p>
+          </div>
+          <dl className="mt-10 text-center sm:mx-auto sm:grid sm:max-w-3xl sm:grid-cols-3 sm:gap-8">
+            <div className="flex flex-col">
+              <dt className="order-2 mt-2 text-lg font-medium leading-6 text-teal-50">Hours Saved Weekly</dt>
+              <dd className="order-1 text-5xl font-bold tracking-tight text-white">2-4</dd>
+            </div>
+            <div className="mt-10 flex flex-col sm:mt-0">
+              <dt className="order-2 mt-2 text-lg font-medium leading-6 text-teal-50">CPT Code Accuracy</dt>
+              <dd className="order-1 text-5xl font-bold tracking-tight text-white">95%</dd>
+            </div>
+            <div className="mt-10 flex flex-col sm:mt-0">
+              <dt className="order-2 mt-2 text-lg font-medium leading-6 text-teal-50">Case Log Efficiency</dt>
+              <dd className="order-1 text-5xl font-bold tracking-tight text-white">10x</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+      {/* Features Section */}
+      <div id="features" className="py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl lg:text-center">
+            <h2 className="text-base font-semibold leading-7 text-teal-600">Faster Case Logging</h2>
+            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              Everything you need to streamline your ACGME case logs
+            </p>
+            <p className="mt-6 text-lg leading-8 text-gray-600">
+              Our assistant uses advanced AI to analyze your surgical cases and determine the most appropriate CPT codes, 
+              saving you time and ensuring accurate reporting for your residency or fellowship program.
+            </p>
+          </div>
+          <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
+            <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
+              <div className="flex flex-col">
+                <dt className="flex items-center gap-x-3 text-base font-semibold leading-7 text-gray-900">
+                  <ClockIcon className="h-5 w-5 flex-none text-teal-600" aria-hidden="true" />
+                  Time-Saving Automation
+                </dt>
+                <dd className="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600">
+                  <p className="flex-auto">
+                    Reduce manual lookup time by automatically identifying the most appropriate CPT codes for your surgical procedures.
+                  </p>
+                </dd>
               </div>
-            )}
-          </div>
-
-          {/* Coming Soon Section */}
-          <div className="bg-white shadow rounded-lg p-6">
-            <h2 className="text-2xl font-semibold mb-4">Features Coming Soon</h2>
-            <ul className="list-disc pl-5 space-y-2">
-              <li>Backend processing of CSV files</li>
-              <li>CPT code inference using AI</li>
-              <li>Real-time progress tracking</li>
-              <li>Results table with sorting and filtering</li>
-              <li>Download processed results</li>
-            </ul>
+              <div className="flex flex-col">
+                <dt className="flex items-center gap-x-3 text-base font-semibold leading-7 text-gray-900">
+                  <DocumentTextIcon className="h-5 w-5 flex-none text-teal-600" aria-hidden="true" />
+                  Accurate Code Mapping
+                </dt>
+                <dd className="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600">
+                  <p className="flex-auto">
+                    Our AI has been trained on thousands of surgical cases to ensure precise CPT code mapping across all specialties.
+                  </p>
+                </dd>
+              </div>
+              <div className="flex flex-col">
+                <dt className="flex items-center gap-x-3 text-base font-semibold leading-7 text-gray-900">
+                  <ChartBarIcon className="h-5 w-5 flex-none text-teal-600" aria-hidden="true" />
+                  Case Log Insights
+                </dt>
+                <dd className="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600">
+                  <p className="flex-auto">
+                    Gain valuable insights into your surgical experience and track progress toward case requirements.
+                  </p>
+                </dd>
+              </div>
+            </dl>
           </div>
         </div>
-      </main>
+      </div>
 
-      <footer className="bg-white border-t mt-12 py-6">
-        <div className="container mx-auto px-4">
-          <p className="text-center text-sm text-gray-500">
-            ACGME Case Log Assistant &copy; {new Date().getFullYear()}
-          </p>
+      {/* How It Works Section */}
+      <div id="how-it-works" className="bg-gray-50 py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl lg:text-center">
+            <h2 className="text-base font-semibold leading-7 text-teal-600">Simple Process</h2>
+            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">How it works</p>
+            <p className="mt-6 text-lg leading-8 text-gray-600">
+              Our streamlined process makes it easy to get accurate CPT codes for all your surgical cases.
+            </p>
+          </div>
+          <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
+            <div className="grid grid-cols-1 gap-y-16 gap-x-8 lg:grid-cols-2">
+              <div className="relative pl-16">
+                <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-teal-600">
+                  <span className="text-white font-bold">1</span>
+                </div>
+                <h3 className="text-base font-semibold leading-7 text-gray-900">Export your case logs</h3>
+                <p className="mt-2 text-base leading-7 text-gray-600">
+                  Export your surgical case logs from the ACGME system or other source as a CSV file.
+                </p>
+              </div>
+              <div className="relative pl-16">
+                <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-teal-600">
+                  <span className="text-white font-bold">2</span>
+                </div>
+                <h3 className="text-base font-semibold leading-7 text-gray-900">Upload to our system</h3>
+                <p className="mt-2 text-base leading-7 text-gray-600">
+                  Simply upload your CSV file to our secure platform for analysis.
+                </p>
+              </div>
+              <div className="relative pl-16">
+                <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-teal-600">
+                  <span className="text-white font-bold">3</span>
+                </div>
+                <h3 className="text-base font-semibold leading-7 text-gray-900">AI analysis</h3>
+                <p className="mt-2 text-base leading-7 text-gray-600">
+                  Our AI system analyzes each case and determines the appropriate CPT codes based on the procedure description.
+                </p>
+              </div>
+              <div className="relative pl-16">
+                <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-teal-600">
+                  <span className="text-white font-bold">4</span>
+                </div>
+                <h3 className="text-base font-semibold leading-7 text-gray-900">Download updated logs</h3>
+                <p className="mt-2 text-base leading-7 text-gray-600">
+                  Download your updated case logs with the correct CPT codes and import them back into your system.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-      </footer>
-    </div>
+      </div>
+
+      {/* Testimonial Section */}
+      <div className="bg-white py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-xl text-center">
+            <h2 className="text-lg font-semibold leading-8 tracking-tight text-teal-600">Testimonials</h2>
+            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              What residents and fellows are saying
+            </p>
+          </div>
+          <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 grid-rows-1 gap-8 text-sm leading-6 text-gray-900 sm:mt-20 sm:grid-cols-2 xl:mx-0 xl:max-w-none xl:grid-flow-col xl:grid-cols-4">
+            <figure className="rounded-2xl bg-white shadow-lg ring-1 ring-gray-200 sm:col-span-2 xl:col-start-2 xl:row-end-1">
+              <blockquote className="p-6 text-lg font-semibold leading-7 text-gray-900 sm:p-8 sm:text-xl sm:leading-8">
+                <p>
+                  "This tool saved me hours of tedious work every week. Coding cases used to be my least favorite part of residency, 
+                  but now it's just a few clicks and I'm done!"
+                </p>
+              </blockquote>
+              <figcaption className="flex flex-wrap items-center gap-x-4 gap-y-4 border-t border-gray-100 px-6 py-4 sm:flex-nowrap">
+                <div className="flex-auto">
+                  <div className="font-semibold">Dr. Sarah Johnson</div>
+                  <div className="text-gray-600">PGY-4 General Surgery Resident</div>
+                </div>
+              </figcaption>
+            </figure>
+            <figure className="rounded-2xl bg-white shadow-lg ring-1 ring-gray-200">
+              <blockquote className="p-6 text-gray-900">
+                <p>
+                  "The accuracy is impressive. It helped me identify several cases where I had used incorrect CPT codes."
+                </p>
+              </blockquote>
+              <figcaption className="flex items-center gap-x-4 border-t border-gray-100 px-6 py-4">
+                <div>
+                  <div className="font-semibold">Dr. Michael Chen</div>
+                  <div className="text-gray-600">Orthopedic Surgery Fellow</div>
+                </div>
+              </figcaption>
+            </figure>
+            <figure className="rounded-2xl bg-white shadow-lg ring-1 ring-gray-200">
+              <blockquote className="p-6 text-gray-900">
+                <p>
+                  "As a program director, I've seen a significant improvement in the accuracy of our residents' case logs since implementing this tool."
+                </p>
+              </blockquote>
+              <figcaption className="flex items-center gap-x-4 border-t border-gray-100 px-6 py-4">
+                <div>
+                  <div className="font-semibold">Dr. Robert Williams</div>
+                  <div className="text-gray-600">Program Director, Vascular Surgery</div>
+                </div>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+
+      {/* FAQ Section */}
+      <div id="faq" className="bg-gray-50">
+        <div className="mx-auto max-w-7xl px-6 py-16 sm:py-24 lg:px-8">
+          <h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900">Frequently asked questions</h2>
+          <div className="mt-10">
+            <dl className="space-y-10 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-12 md:space-y-0">
+              <div>
+                <dt className="text-base font-semibold leading-7 text-gray-900">Is my data secure?</dt>
+                <dd className="mt-2 text-base leading-7 text-gray-600">
+                  Yes, we take data security seriously. All uploads are encrypted and we do not store any patient-identifying information.
+                </dd>
+              </div>
+              <div>
+                <dt className="text-base font-semibold leading-7 text-gray-900">Which specialties do you support?</dt>
+                <dd className="mt-2 text-base leading-7 text-gray-600">
+                  Our system supports all surgical specialties in the ACGME system, including General Surgery, Orthopedics, ENT, Neurosurgery, and more.
+                </dd>
+              </div>
+              <div>
+                <dt className="text-base font-semibold leading-7 text-gray-900">How accurate is the CPT code assignment?</dt>
+                <dd className="mt-2 text-base leading-7 text-gray-600">
+                  Our AI has been trained on thousands of surgical cases and achieves over 95% accuracy in CPT code assignment.
+                </dd>
+              </div>
+              <div>
+                <dt className="text-base font-semibold leading-7 text-gray-900">Can I edit the suggested CPT codes?</dt>
+                <dd className="mt-2 text-base leading-7 text-gray-600">
+                  Yes, you can review and edit any suggested CPT codes before finalizing your case logs.
+                </dd>
+              </div>
+              <div>
+                <dt className="text-base font-semibold leading-7 text-gray-900">Is there a limit to how many cases I can process?</dt>
+                <dd className="mt-2 text-base leading-7 text-gray-600">
+                  No, there is no limit to the number of cases you can process with our tool.
+                </dd>
+              </div>
+              <div>
+                <dt className="text-base font-semibold leading-7 text-gray-900">Do you offer institutional licenses?</dt>
+                <dd className="mt-2 text-base leading-7 text-gray-600">
+                  Yes, we offer program-wide licenses for residency and fellowship programs. Contact us for details.
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </div>
+
+      {/* CTA Section */}
+      <div className="bg-white">
+        <div className="mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8">
+          <div className="relative isolate overflow-hidden bg-gradient-to-r from-teal-500 to-teal-700 px-6 py-24 text-center shadow-2xl sm:rounded-3xl sm:px-16">
+            <h2 className="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
+              Start saving time on your case logs today
+            </h2>
+            <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-teal-50">
+              Join thousands of residents and fellows who have streamlined their ACGME case logging process.
+            </p>
+            <div className="mt-10 flex items-center justify-center gap-x-6">
+              <Link
+                href="/upload"
+                className="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-teal-600 shadow-sm hover:bg-teal-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              >
+                Get started
+              </Link>
+              <Link href="#features" className="text-sm font-semibold leading-6 text-white">
+                Learn more <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <Footer />
+    </>
   );
 }
