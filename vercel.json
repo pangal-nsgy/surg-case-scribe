@@ -1,8 +1,10 @@
 {
   "version": 2,
   "buildCommand": "npm run build",
+  "installCommand": "npm install && pip install -r requirements.txt",
   "outputDirectory": ".next",
   "framework": "nextjs",
+  "regions": ["sfo1"],
   "routes": [
     {
       "src": "/api/(.*)",
@@ -10,7 +12,9 @@
     }
   ],
   "env": {
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "OPENAI_API_KEY": "@openai-api-key",
+    "DEFAULT_YEAR": "2023"
   },
   "github": {
     "silent": true,
