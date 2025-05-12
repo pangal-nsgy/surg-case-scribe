@@ -9,15 +9,20 @@ import {
   ChartBarIcon, 
   ClipboardDocumentIcon,
   CheckCircleIcon,
-  ExclamationCircleIcon
+  ExclamationCircleIcon,
+  ArrowUpTrayIcon,
+  ArrowPathIcon
 } from '@heroicons/react/24/outline';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import Link from 'next/link';
 
 // Types for processing status and result
-type ProcessingStatus = 'idle' | 'uploading' | 'processing' | 'completed' | 'error';
+type ProcessingStatus = 'idle' | 'uploading' | 'processing' | 'success' | 'error';
 
-interface SurgicalCase {
+type Result = {
+  job_id: string;
+  status: string;
   procedure_type: string;
   procedure_date: string;
   patient_id: string;
@@ -26,29 +31,39 @@ interface SurgicalCase {
   predicted_cpt_code: string;
   cpt_description: string;
   confidence: number;
-}
+};
 
-interface ProcessingResult {
-  job_id: string;
-  status: string;
-  message: string;
-  results: SurgicalCase[];
-}
+type FileInfo = {
+  name: string;
+  size: number;
+  type: string;
+  lastModified: number;
+};
 
 export default function UploadPage() {
   // State for file and processing
   const [file, setFile] = useState<File | null>(null);
+  const [fileInfo, setFileInfo] = useState<FileInfo | null>(null);
   const [status, setStatus] = useState<ProcessingStatus>('idle');
   const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<ProcessingResult | null>(null);
+  const [result, setResult] = useState<Result[]>([]);
+  const [standardizationInfo, setStandardizationInfo] = useState<string>('');
 
   // Handle file drop
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
-      setFile(acceptedFiles[0]);
+      const selectedFile = acceptedFiles[0];
+      setFile(selectedFile);
+      setFileInfo({
+        name: selectedFile.name,
+        size: selectedFile.size,
+        type: selectedFile.type,
+        lastModified: selectedFile.lastModified
+      });
       setStatus('idle');
       setError(null);
-      setResult(null);
+      setResult([]);
+      setStandardizationInfo('');
     }
   }, []);
 
@@ -88,9 +103,14 @@ export default function UploadPage() {
       // Parse the response
       const data = await response.json();
       
+      // Store standardization info if available
+      if (data.standardization) {
+        setStandardizationInfo(data.standardization);
+      }
+
       // Set the result
-      setResult(data);
-      setStatus('completed');
+      setResult(data.data || []);
+      setStatus('success');
     } catch (err) {
       console.error('Error uploading file:', err);
       setStatus('error');
@@ -101,39 +121,23 @@ export default function UploadPage() {
   // Reset the form
   const handleReset = () => {
     setFile(null);
+    setFileInfo(null);
     setStatus('idle');
     setError(null);
-    setResult(null);
+    setResult([]);
+    setStandardizationInfo('');
   };
 
-  // Handle downloading results
-  const handleDownload = () => {
-    if (!result) return;
-    
-    // Convert result to CSV
-    const headers = ["procedure_type", "procedure_date", "patient_id", "hospital", "attending", "predicted_cpt_code", "cpt_description", "confidence"];
-    const csvRows = [headers.join(',')];
-    
-    result.results.forEach(row => {
-      const values = headers.map(header => {
-        const value = row[header as keyof SurgicalCase];
-        return `"${value}"`;
-      });
-      csvRows.push(values.join(','));
-    });
-    
-    const csvContent = csvRows.join('\n');
-    
-    // Create download link
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', `processed_${file?.name || 'cases'}`);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  // Format file size for display
+  const formatFileSize = (size: number): string => {
+    if (size < 1024) return size + ' B';
+    else if (size < 1048576) return (size / 1024).toFixed(1) + ' KB';
+    else return (size / 1048576).toFixed(1) + ' MB';
+  };
+
+  // Format confidence as percentage
+  const formatConfidence = (confidence: number): string => {
+    return (confidence * 100).toFixed(1) + '%';
   };
 
   return (
@@ -146,7 +150,7 @@ export default function UploadPage() {
             <div className="text-center mb-10">
               <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl mb-2">Upload Your Case Logs</h1>
               <p className="text-xl text-gray-600">Get accurate CPT codes for your surgical cases</p>
-              {status !== 'completed' && (
+              {status !== 'success' && (
                 <p className="mt-2 text-sm text-orange-600">Demo Version - Limited Backend Processing Available</p>
               )}
             </div>
@@ -155,7 +159,7 @@ export default function UploadPage() {
             <div className="bg-white shadow rounded-xl p-8 mb-8">
               <h2 className="text-2xl font-semibold mb-6">Upload CSV File</h2>
               
-              {status !== 'completed' && (
+              {status !== 'success' && (
                 <div 
                   {...getRootProps()} 
                   className={`border-2 border-dashed rounded-lg p-10 text-center cursor-pointer transition duration-300 ease-in-out ${
@@ -173,12 +177,12 @@ export default function UploadPage() {
                 </div>
               )}
 
-              {file && status !== 'completed' && (
+              {fileInfo && status !== 'success' && (
                 <div className="mt-4 p-3 bg-gray-50 rounded-md flex items-center justify-between">
                   <div className="flex items-center">
                     <DocumentTextIcon className="h-5 w-5 text-gray-500 mr-2" />
-                    <span className="text-sm font-medium">{file.name}</span>
-                    <span className="ml-2 text-xs text-gray-500">({Math.round(file.size / 1024)} KB)</span>
+                    <span className="text-sm font-medium">{fileInfo.name}</span>
+                    <span className="ml-2 text-xs text-gray-500">({formatFileSize(fileInfo.size)})</span>
                   </div>
                   <button
                     onClick={(e) => {
@@ -192,7 +196,7 @@ export default function UploadPage() {
                 </div>
               )}
 
-              {status !== 'completed' && (
+              {status !== 'success' && (
                 <div className="mt-6 flex justify-between">
                   <button
                     onClick={handleReset}
@@ -222,8 +226,19 @@ export default function UploadPage() {
                 </div>
               )}
               
+              {/* Standardization Info */}
+              {standardizationInfo && (
+                <div className="mt-4 p-4 text-sm text-green-700 bg-green-100 rounded-md">
+                  <div className="flex items-center mb-1">
+                    <CheckCircleIcon className="h-5 w-5 mr-2" />
+                    <p className="font-semibold">Column Standardization</p>
+                  </div>
+                  <p>{standardizationInfo}</p>
+                </div>
+              )}
+              
               {/* Results section */}
-              {result && (
+              {status === 'success' && (
                 <div className="mt-6">
                   <div className="flex items-center mb-4 text-teal-600">
                     <CheckCircleIcon className="h-6 w-6 mr-2" />
@@ -231,15 +246,15 @@ export default function UploadPage() {
                   </div>
                   
                   <p className="text-gray-700 mb-4">
-                    Successfully analyzed {result.results.length} surgical cases and assigned CPT codes.
+                    Successfully analyzed {result.length} surgical cases and assigned CPT codes.
                   </p>
                   
                   <div className="mb-6">
                     <button
-                      onClick={handleDownload}
+                      onClick={() => {/* Export functionality would go here */}}
                       className="px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-md hover:bg-teal-700"
                     >
-                      Download Results
+                      Export Results
                     </button>
                     <button
                       onClick={handleReset}
@@ -271,7 +286,7 @@ export default function UploadPage() {
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
-                        {result.results.map((item, index) => (
+                        {result.map((item, index) => (
                           <tr key={index}>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                               {item.procedure_type}
@@ -286,7 +301,14 @@ export default function UploadPage() {
                               {item.cpt_description}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              {(item.confidence * 100).toFixed(0)}%
+                              <span 
+                                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                  item.confidence >= 0.9 ? 'bg-green-100 text-green-800' : 
+                                  item.confidence >= 0.7 ? 'bg-blue-100 text-blue-800' : 'bg-yellow-100 text-yellow-800'
+                                }`}
+                              >
+                                {formatConfidence(item.confidence)}
+                              </span>
                             </td>
                           </tr>
                         ))}
@@ -297,7 +319,7 @@ export default function UploadPage() {
               )}
             </div>
 
-            {status !== 'completed' && (
+            {status !== 'success' && (
               <>
                 {/* Instructions Section */}
                 <div className="bg-white shadow rounded-xl p-8 mb-8">
